@@ -8,7 +8,6 @@ from analizador import AnalizadorComposicionCorporal
     (110, 1.60, "Obesidad"),
     (80, 1.75, "Sobrepeso")
 ])
-
 def test_calcular_imc(peso, altura, expected):
     analizador = AnalizadorComposicionCorporal("", "", "", peso, altura, 0, 0)
     assert analizador.calcular_imc() == expected
@@ -47,3 +46,23 @@ def test_analizar_agua_corporal(sexo, peso, expected):
     analizador = AnalizadorComposicionCorporal("", "", sexo, peso, 0, 0, 0)
     assert analizador.analizar_agua_corporal() == expected
 
+@pytest.mark.parametrize("nombre, apellido, sexo, peso, altura, edad, grasa, expected_str", [
+    ("Juan", "Pérez", "Hombre", 70, 1.75, 30, 20, (
+        "Nombre: Juan Pérez\n"
+        "IMC: Normal\n"
+        "TBM: 1649\n"
+        "Composición: Porcentaje de grasa normal\n"
+        "Agua Corporal: Nivel de agua corporal adecuado"
+    )),
+    ("Ana", "García", "Mujer", 60, 1.65, 25, 14, (
+        "Nombre: Ana García\n"
+        "IMC: Normal\n"
+        "TBM: 1345\n"
+        "Composición: Porcentaje de grasa bajo\n"
+        "Agua Corporal: Bajo nivel de agua corporal"
+    ))
+])
+
+def test_str_method(nombre, apellido, sexo, peso, altura, edad, grasa, expected_str):
+    analizador = AnalizadorComposicionCorporal(nombre, apellido, sexo, peso, altura, edad, grasa)
+    assert str(analizador) == expected_str
